@@ -12,12 +12,36 @@ export FREEARCHY=true
 
 echo "Freearchy Quattro installer starting..."
 
-# Prefer Freearchy-specific stages; fall back to upstream if present
-source "$OMARCHY_INSTALL/helpers/all.sh" 2>/dev/null || true
-source "$OMARCHY_INSTALL/freearchy-preflight.sh" || source "$OMARCHY_INSTALL/preflight/all.sh" 2>/dev/null || true
-source "$OMARCHY_INSTALL/freearchy-packaging.sh" || source "$OMARCHY_INSTALL/packaging/all.sh" 2>/dev/null || true
-source "$OMARCHY_INSTALL/config/all.sh" 2>/dev/null || true
-source "$OMARCHY_INSTALL/login/all.sh" 2>/dev/null || true
-source "$OMARCHY_INSTALL/post-install/all.sh" 2>/dev/null || true
+# Helpers (best effort)
+source "$OMARCHY_INSTALL/helpers/logging.sh" 2>/dev/null || true
 
-echo "Freearchy installation complete. Reboot recommended."
+# Preflight (interactive options) — must succeed
+if [ -f "$OMARCHY_INSTALL/freearchy-preflight.sh" ]; then
+  source "$OMARCHY_INSTALL/freearchy-preflight.sh"
+else
+  echo "Warning: freearchy-preflight.sh missing" >&2
+fi
+
+# Packaging
+if [ -f "$OMARCHY_INSTALL/freearchy-packaging.sh" ]; then
+  source "$OMARCHY_INSTALL/freearchy-packaging.sh"
+fi
+
+# Freearchy-specific config (theme, autostart, snapshots)
+if [ -f "$OMARCHY_INSTALL/freearchy-config.sh" ]; then
+  source "$OMARCHY_INSTALL/freearchy-config.sh"
+fi
+
+# Upstream stages if they exist and helpers are present
+if [ -f "$OMARCHY_INSTALL/config/all.sh" ] && type run_logged >/dev/null 2>&1; then
+  source "$OMARCHY_INSTALL/config/all.sh" || true
+fi
+
+if [ -f "$OMARCHY_INSTALL/login/all.sh" ] && type run_logged >/dev/null 2>&1; then
+  source "$OMARCHY_INSTALL/login/all.sh" || true
+fi
+
+echo ""
+echo "Freearchy installation complete."
+echo "Reboot, then select the Freearchy session (or start Hyprland) at login."
+echo "Quickshell should autostart via the Hyprland config."
