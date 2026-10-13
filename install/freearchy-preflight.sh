@@ -4,6 +4,12 @@
 
 set -e
 
+# Ensure gum is available for nicer menus
+if ! command -v gum >/dev/null 2>&1; then
+  echo "Installing gum for better menus..." >&2
+  sudo pacman -Sy --noconfirm --needed gum || true
+fi
+
 TTY=/dev/tty
 exec 3<&0  # save original stdin
 exec <"$TTY" || { echo "Error: no controlling terminal for interactive install." >&2; exit 1; }
