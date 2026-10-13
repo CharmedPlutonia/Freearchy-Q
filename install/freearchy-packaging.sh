@@ -6,8 +6,8 @@ set -e
 
 echo "=== Freearchy Packaging ==="
 
-# Ensure base tools
-sudo pacman -Syu --noconfirm --needed git base-devel
+# Ensure base tools and gum for better menus
+sudo pacman -Syu --noconfirm --needed git base-devel gum
 
 # Core packages needed for Omarchy 4 / Quickshell (stock where possible)
 CORE_PKGS=(
@@ -37,14 +37,16 @@ CORE_PKGS=(
   git
   fastfetch
   btop
-  gum
   plymouth
-  limine
-  snapper
-  # Keep omasnap if present in upstream; otherwise snapper is the snapshot app
+  nautilus
 )
 
 sudo pacman -S --noconfirm --needed "${CORE_PKGS[@]}" || echo "Some core packages may need AUR or Omarchy repo"
+
+# Snapshots / bootloader if chosen
+if [ "${FREEARCHY_SNAPSHOTS:-yes}" = "yes" ]; then
+  sudo pacman -S --noconfirm --needed limine snapper || echo "limine/snapper install issue"
+fi
 
 # Browser
 case "$FREEARCHY_BROWSER" in
