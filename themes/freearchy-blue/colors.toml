@@ -1,0 +1,29 @@
+# Freearchy Blue - dark palette based on the Freearchy logo cyan (#20DFF1)
+
+[colors]
+background = "#0d1117"
+foreground = "#c9d1d9"
+cursor = "#20DFF1"
+
+# Normal
+black = "#161b22"
+red = "#ff7b72"
+green = "#3fb950"
+yellow = "#d29922"
+blue = "#58a6ff"
+magenta = "#bc8cff"
+cyan = "#20DFF1"
+white = "#b1bac4"
+
+# Bright
+bright_black = "#21262d"
+bright_red = "#ffa198"
+bright_green = "#56d364"
+bright_yellow = "#e3b341"
+bright_blue = "#79c0ff"
+bright_magenta = "#d2a8ff"
+bright_cyan = "#56d4dd"
+bright_white = "#f0f6fc"
+
+# Accents
+accent = "#20DFF1"
